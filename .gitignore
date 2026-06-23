@@ -1,0 +1,28 @@
+﻿# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+appsettings.json
+appsettings.Development.json
+
+# Packages
+node_modules/
+
+# Publish folder
+publish/
+
+# IIS Express
+.vs/config/
