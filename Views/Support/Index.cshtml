@@ -1,0 +1,183 @@
+﻿@{
+    Layout = "~/Views/Shared/_SupportLayout.cshtml";
+    ViewBag.Title = "Support Dashboard";
+}
+
+<div class="space-y-6">
+
+    <!-- 🔥 Header -->
+    <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold">Dashboard</h2>
+
+        <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700">
+            + Add Task
+        </button>
+    </div>
+
+    <!-- 🔥 Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <div onclick="openTaskModal('Open Tickets')" class="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <p class="text-gray-500 text-sm">Open</p>
+            <h2 class="text-xl font-bold text-red-500">18</h2>
+        </div>
+
+        <div onclick="openTaskModal('Resolved Tickets')" class="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <p class="text-gray-500 text-sm">Resolved</p>
+            <h2 class="text-xl font-bold text-green-500">12</h2>
+        </div>
+
+        <div onclick="openTaskModal('Pending Tickets')" class="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <p class="text-gray-500 text-sm">Pending</p>
+            <h2 class="text-xl font-bold text-yellow-500">7</h2>
+        </div>
+
+        <div onclick="openTaskModal('Active Chats')" class="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <p class="text-gray-500 text-sm">Chats</p>
+            <h2 class="text-xl font-bold text-blue-500">5</h2>
+        </div>
+
+    </div>
+
+    <!-- 📊 Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-sm font-semibold mb-2">Ticket Status</h3>
+            <canvas id="ticketChart"></canvas>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-sm font-semibold mb-2">Weekly Tickets</h3>
+            <canvas id="weeklyChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 🔥 TASK LIST MODAL -->
+<div id="taskListModal" class="fixed inset-0 bg-black bg-opacity-40 hidden justify-center items-center">
+
+    <div class="bg-white w-full max-w-lg rounded-xl p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 id="modalTitle" class="font-bold text-lg"></h2>
+            <button onclick="closeTaskModal()">✖</button>
+        </div>
+
+        <div id="taskContent" class="space-y-3 text-sm"></div>
+
+    </div>
+
+</div>
+
+<!-- 🔥 ADD TASK MODAL -->
+<div id="addTaskModal" class="fixed inset-0 bg-black bg-opacity-40 hidden justify-center items-center">
+
+    <div class="bg-white w-full max-w-md rounded-xl p-6 relative">
+
+        <button onclick="closeAddModal()" class="absolute top-3 right-3">✖</button>
+
+        <h2 class="font-bold mb-4">Add Task</h2>
+
+        <form>
+
+            <input type="text" placeholder="Task Title" class="w-full border p-2 mb-3 rounded" />
+
+            <textarea placeholder="Description" class="w-full border p-2 mb-3 rounded"></textarea>
+
+            <select class="w-full border p-2 mb-3 rounded">
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+
+            <input type="text" placeholder="Assign User" class="w-full border p-2 mb-3 rounded" />
+
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Charts
+    new Chart(document.getElementById('ticketChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Open', 'Resolved', 'Pending'],
+            datasets: [{
+                data: [18, 12, 7],
+                backgroundColor: ['#ef4444', '#22c55e', '#facc15']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('weeklyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            datasets: [{
+                data: [5, 9, 7, 6, 8],
+                backgroundColor: '#3b82f6'
+            }]
+        }
+    });
+
+    // 🔥 Open Task Modal
+    function openTaskModal(type) {
+        document.getElementById("taskListModal").classList.remove("hidden");
+        document.getElementById("taskListModal").classList.add("flex");
+
+        document.getElementById("modalTitle").innerText = type;
+
+        let content = "";
+
+        if (type === "Open Tickets") {
+            content = `
+                <div class='p-3 bg-gray-100 rounded'>Login Issue - Rahul</div>
+                <div class='p-3 bg-gray-100 rounded'>Payment Error - Amit</div>
+            `;
+        }
+        else if (type === "Resolved Tickets") {
+            content = `
+                <div class='p-3 bg-green-100 rounded'>Order Fixed - Neha</div>
+            `;
+        }
+        else if (type === "Pending Tickets") {
+            content = `
+                <div class='p-3 bg-yellow-100 rounded'>Waiting Reply - User1</div>
+            `;
+        }
+        else {
+            content = `
+                <div class='p-3 bg-blue-100 rounded'>Chat with User2</div>
+            `;
+        }
+
+        document.getElementById("taskContent").innerHTML = content;
+    }
+
+    function closeTaskModal() {
+        document.getElementById("taskListModal").classList.add("hidden");
+    }
+
+    // 🔥 Add Modal
+    function openAddModal() {
+        document.getElementById("addTaskModal").classList.remove("hidden");
+        document.getElementById("addTaskModal").classList.add("flex");
+    }
+
+    function closeAddModal() {
+        document.getElementById("addTaskModal").classList.add("hidden");
+    }
+</script>
