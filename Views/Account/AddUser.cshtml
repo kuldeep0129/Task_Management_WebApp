@@ -1,0 +1,249 @@
+﻿@model Task_Management_Web.Dto.AddUserDto
+@using Task_Management_Web.Enum
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+    .card-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .card-header h2 {
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            color: #6b7280;
+        }
+
+    .section {
+        margin-bottom: 30px;
+    }
+
+        .section h4 {
+            margin-bottom: 15px;
+            color: #2563eb;
+            border-left: 4px solid #2563eb;
+            padding-left: 10px;
+        }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        margin-top: 5px;
+    }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+    .upload-box {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .preview-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ddd;
+    }
+
+    .status-box {
+        margin-top: 15px;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn-save {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .btn-cancel {
+        background: #e5e7eb;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .error {
+        color: red;
+        font-size: 13px;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Add User";
+    Layout = null;
+}
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="card-header">
+            <h2>Add New User</h2>
+            <p>Create a new user account</p>
+        </div>
+
+        @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post,
+                new { enctype = "multipart/form-data" }))
+        {
+
+            <!-- Personal Information -->
+            <div class="section">
+                <h4>Personal Information</h4>
+
+                <div class="grid">
+
+                    <div>
+                        <label>Full Name</label>
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FullName)
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+                        @Html.TextBoxFor(m => m.Email,
+                        new { @class = "form-control", type = "email" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+
+                <div>
+                    <label>Mobile Number</label>
+                    @Html.TextBoxFor(m => m.Mobile,
+                                        new { @class = "form-control" })
+                </div>
+
+                <div>
+                    <label>Role</label>
+                    @Html.DropDownListFor(m => m.Role,
+                                        new SelectList(Enum.GetValues(typeof(RoleEnum))),
+                                        "Select Role",
+                                        new { @class = "form-control" })
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Security -->
+        <div class="section">
+            <h4>Security</h4>
+
+            <div class="grid">
+
+                <div>
+                    <label>Password</label>
+                    @Html.PasswordFor(m => m.Password,
+                                        new { @class = "form-control", id = "password" })
+                </div>
+
+                <div>
+                    <label>Confirm Password</label>
+                    <input type="password"
+                           id="confirmPassword"
+                           class="form-control" />
+                    <span id="passError" class="error"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="section">
+            <h4>Address Details</h4>
+
+            <label>Address</label>
+            @Html.TextAreaFor(m => m.Address,
+                        new { @class = "form-control", rows = 3 })
+        </div>
+
+        <!-- Profile -->
+        <div class="section">
+            <h4>Profile Picture</h4>
+
+            <div class="upload-box">
+                <img id="preview"
+                     src="https://via.placeholder.com/120"
+                     class="preview-img" />
+
+                <input type="file"
+                       name="ProfileFile"
+                       id="ProfileFile"
+                       onchange="previewImage(event)" />
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="status-box">
+            @Html.CheckBoxFor(m => m.Status)
+            <span>Active User</span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+            <button type="reset" class="btn-cancel">
+                Cancel
+            </button>
+
+            <button type="submit"
+                    class="btn-save"
+                    onclick="return validatePassword()">
+                Save User
+            </button>
+        </div>
+
+                }
+
+    </div>
+
+</div>
+
+   
+
+<script>
+        function previewImage(event) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            document.getElementById("preview").src = reader.result;
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
