@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Support Panel</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="flex min-h-screen">
+
+        <!-- 🔹 Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white flex flex-col">
+
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-700">
+                <h2 class="text-xl font-bold">Support Panel</h2>
+            </div>
+
+            <!-- Menu -->
+            <ul class="flex-1 p-3 space-y-2">
+
+                <li class="p-2 rounded hover:bg-gray-800 cursor-pointer">
+                    <i class="fa fa-chart-line mr-2"></i> Dashboard
+                </li>
+
+                <li class="p-2 rounded hover:bg-gray-800 cursor-pointer">
+                    <i class="fa fa-ticket mr-2"></i> Tickets
+                </li>
+
+                <li class="p-2 rounded hover:bg-gray-800 cursor-pointer">
+                    <i class="fa fa-users mr-2"></i> Users
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <!-- 🔹 Main Content -->
+        <div class="flex-1 flex flex-col">
+
+            <!-- 🔥 Navbar -->
+            <header class="bg-white shadow px-6 py-3 flex justify-between items-center">
+
+                <!-- Left -->
+                <h1 class="text-lg font-semibold">@ViewBag.Title</h1>
+
+                <!-- Right -->
+                <div class="flex items-center gap-6">
+
+                    <!-- Notification -->
+                    <div class="relative cursor-pointer">
+                        <i class="fa fa-bell text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">
+                            3
+                        </span>
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+
+                        <div onclick="toggleDropdown()" class="flex items-center gap-2 cursor-pointer">
+                            <img src="https://i.pravatar.cc/40" class="rounded-full" />
+                            <span class="font-medium">Radhika</span>
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+
+                        <!-- Dropdown -->
+                        <div id="dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white shadow rounded">
+
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                <i class="fa fa-user mr-2"></i> Profile
+                            </a>
+
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                                <i class="fa fa-cog mr-2"></i> Settings
+                            </a>
+
+                            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-100">
+                                <i class="fa fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- 🔹 Page Content -->
+            <main class="p-6">
+                @RenderBody()
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Script -->
+    <script>
+        function toggleDropdown() {
+            document.getElementById("dropdown").classList.toggle("hidden");
+        }
+    </script>
+
+</body>
+</html>
