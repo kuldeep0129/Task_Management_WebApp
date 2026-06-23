@@ -15,7 +15,7 @@ obj/
 Thumbs.db
 
 # Environment files
-appsettings.json
+#appsettings.json
 appsettings.Development.json
 
 # Packages
