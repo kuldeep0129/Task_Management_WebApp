@@ -4,7 +4,7 @@ namespace Task_Management_Web.Controllers
 {
     public class DeveloperController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Developer_ui()
         {
             return View();
         }
