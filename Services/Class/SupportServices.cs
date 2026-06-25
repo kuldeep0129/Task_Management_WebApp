@@ -29,7 +29,7 @@ namespace Task_Management_Web.Services.Class
                 update_by = "2",
                 update_date = DateTime.Now,
             };
-            await _repository.AddTask(data);
+           // await _repository.AddTask(data);
             return true;
 
         }
