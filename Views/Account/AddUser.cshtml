@@ -1,249 +1,170 @@
 ﻿@model Task_Management_Web.Dto.AddUserDto
 @using Task_Management_Web.Enum
 
-<style>
-    .container {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 20px;
-    }
-
-    .card {
-        background: #fff;
-        border-radius: 15px;
-        padding: 35px;
-        box-shadow: 0 10px 25px rgba(0,0,0,.08);
-    }
-
-    .card-header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-        .card-header h2 {
-            margin-bottom: 5px;
-        }
-
-        .card-header p {
-            color: #6b7280;
-        }
-
-    .section {
-        margin-bottom: 30px;
-    }
-
-        .section h4 {
-            margin-bottom: 15px;
-            color: #2563eb;
-            border-left: 4px solid #2563eb;
-            padding-left: 10px;
-        }
-
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-        gap: 20px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #dcdcdc;
-        border-radius: 8px;
-        margin-top: 5px;
-    }
-
-        .form-control:focus {
-            border-color: #2563eb;
-            outline: none;
-        }
-
-    .upload-box {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .preview-img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #ddd;
-    }
-
-    .status-box {
-        margin-top: 15px;
-    }
-
-    .btn-group {
-        display: flex;
-        justify-content: flex-end;
-        gap: 15px;
-        margin-top: 25px;
-    }
-
-    .btn-save {
-        background: #2563eb;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .btn-cancel {
-        background: #e5e7eb;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    .error {
-        color: red;
-        font-size: 13px;
-    }
-</style>
-
 @{
-    ViewBag.Title = "Add User";
-    Layout = null;
+    Layout = "~/Views/Shared/_Partial_Layout.cshtml";
 }
 
-<div class="container">
 
-    <div class="card">
 
-        <div class="card-header">
-            <h2>Add New User</h2>
-            <p>Create a new user account</p>
+<link href="~/css/add-user.css" rel="stylesheet" asp-append-version="true" />
+
+
+
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewData["Title"] = "Add User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-container">
+
+    <div class="card shadow">
+
+        <div class="card-header text-center text-white">
+            <h4>Create User</h4>
+            <small>Add new user details below</small>
         </div>
 
-        @using (Html.BeginForm("AddUser", "Admin", FormMethod.Post,
-                new { enctype = "multipart/form-data" }))
-        {
+        <div class="card-body">
 
-            <!-- Personal Information -->
-            <div class="section">
-                <h4>Personal Information</h4>
+            <form asp-action="SaveUser" asp-controller="Account" method="post" enctype="multipart/form-data">
 
-                <div class="grid">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div>
-                        <label>Full Name</label>
-                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.FullName)
+                <div>
+                    <h4>@ViewBag.Message</h4>
+                </div>
+
+                <!-- Personal Info -->
+                <h6 class="section-title">Personal Information</h6>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FullName"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
 
-                    <div>
-                        <label>Email</label>
-                        @Html.TextBoxFor(m => m.Email,
-                        new { @class = "form-control", type = "email" })
-                    @Html.ValidationMessageFor(m => m.Email)
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Mobile"></label>
+                        <input asp-for="Mobile" class="form-control" />
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Role"></label>
+                        <select asp-for="Role"  class="form-control">
+                            <option value="">Select Role</option>
+                            @foreach (var role in Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>())
+                            {
+                                if (role != RoleEnum.Admin)   
+                                {
+                                    <option value="@((int)role)">@role</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+
                 </div>
 
-                <div>
-                    <label>Mobile Number</label>
-                    @Html.TextBoxFor(m => m.Mobile,
-                                        new { @class = "form-control" })
+                <!-- Security -->
+                <h6 class="section-title">Security</h6>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Password</label>
+                        <input asp-for="Password" type="password" id="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" id="confirmPassword" class="form-control" />
+                        <span id="passError" class="text-danger"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
                 </div>
 
-                <div>
-                    <label>Role</label>
-                    @Html.DropDownListFor(m => m.Role,
-                                        new SelectList(Enum.GetValues(typeof(RoleEnum))),
-                                        "Select Role",
-                                        new { @class = "form-control" })
+                <!-- Address -->
+                <div class="mb-3">
+                    <label asp-for="Address"></label>
+                    <textarea asp-for="Address" class="form-control"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
 
-            </div>
-        </div>
+                <!-- Image -->
+                <div class="mb-3">
+                    <label class="form-label">Profile Image</label>
 
-        <!-- Security -->
-        <div class="section">
-            <h4>Security</h4>
+                    <div class="image-upload-row">
 
-            <div class="grid">
+                        <!-- Preview -->
+                        <img id="preview" src="https://via.placeholder.com/100" class="preview-img" />
 
-                <div>
-                    <label>Password</label>
-                    @Html.PasswordFor(m => m.Password,
-                                        new { @class = "form-control", id = "password" })
+                        <!-- Upload Button -->
+                        <input type="file"  asp-for=ProfilePicture class="form-control file-input" onchange="previewImage(event)" />
+
+                    </div>
                 </div>
 
-                <div>
-                    <label>Confirm Password</label>
-                    <input type="password"
-                           id="confirmPassword"
-                           class="form-control" />
-                    <span id="passError" class="error"></span>
+                <!-- Status -->
+                <div class="form-check mb-3">
+                    <input asp-for="Status" class="form-check-input" />
+                    <label class="form-check-label">Active User</label>
                 </div>
 
-            </div>
+                <!-- Buttons -->
+                <div class="text-end">
+                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validatePassword()">Save</button>
+
+                    <a asp-action="Login" class="btn btn-light btn-outline-primary">Login</a>
+                </div>
+
+            </form>
+
         </div>
-
-        <!-- Address -->
-        <div class="section">
-            <h4>Address Details</h4>
-
-            <label>Address</label>
-            @Html.TextAreaFor(m => m.Address,
-                        new { @class = "form-control", rows = 3 })
-        </div>
-
-        <!-- Profile -->
-        <div class="section">
-            <h4>Profile Picture</h4>
-
-            <div class="upload-box">
-                <img id="preview"
-                     src="https://via.placeholder.com/120"
-                     class="preview-img" />
-
-                <input type="file"
-                       name="ProfileFile"
-                       id="ProfileFile"
-                       onchange="previewImage(event)" />
-            </div>
-        </div>
-
-        <!-- Status -->
-        <div class="status-box">
-            @Html.CheckBoxFor(m => m.Status)
-            <span>Active User</span>
-        </div>
-
-        <!-- Buttons -->
-        <div class="btn-group">
-            <button type="reset" class="btn-cancel">
-                Cancel
-            </button>
-
-            <button type="submit"
-                    class="btn-save"
-                    onclick="return validatePassword()">
-                Save User
-            </button>
-        </div>
-
-                }
-
     </div>
 
 </div>
 
-   
-
-<script>
+@section Scripts {
+    <script>
         function previewImage(event) {
-        var reader = new FileReader();
-
-        reader.onload = function () {
-            document.getElementById("preview").src = reader.result;
+            var reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById("preview").src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
         }
 
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
+        function validatePassword() {
+            var p = document.getElementById("password").value;
+            var c = document.getElementById("confirmPassword").value;
+
+            if (p !== c) {
+                document.getElementById("passError").innerText = "Passwords do not match";
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+
 

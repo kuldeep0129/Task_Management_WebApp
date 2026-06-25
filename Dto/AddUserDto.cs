@@ -22,6 +22,12 @@ namespace Task_Management_Web.Dto
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
         public string Password { get; set; }
 
+
+
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(6, ErrorMessage = "Confirm Password Should be match Password")]
+        public string ConfirmPassword { get; set; }
+
         [Required(ErrorMessage = "Role is required")]
         public RoleEnum Role { get; set; }   
 
