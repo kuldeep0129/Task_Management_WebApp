@@ -2,5 +2,6 @@
 {
     public interface IDeveloper_Repository
     {
+
     }
 }
